@@ -2,7 +2,13 @@ body {
     text-align: center;
     font-family: sans-serif;
 }
-
+#Tetris{
+    background-color: lightcoral;
+    position:inherit;
+    margin: auto;
+    width: 600px;
+}
 canvas {
     background-color: lightcoral;
+    margin: 20px;
 }
