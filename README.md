@@ -1,2 +1,2 @@
 # Tetris
-Simple Tetris game
+Simple Tetris game made with web-base JS.
