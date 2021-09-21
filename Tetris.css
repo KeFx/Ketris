@@ -4,9 +4,8 @@ body {
 }
 #Tetris{
     background-color: lightcoral;
-    position:inherit;
     margin: auto;
-    width: 600px;
+    width: 500px;
 }
 canvas {
     background-color: lightcoral;
