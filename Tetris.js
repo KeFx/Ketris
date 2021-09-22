@@ -73,12 +73,7 @@ class Square {
     }
 
     hasCollide(obstacle) {
-        if (this.o.y + this.baseUnitSideLength === obstacle.y){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return (this.o.y + this.baseUnitSideLength === obstacle.y);
     }
 }
 
