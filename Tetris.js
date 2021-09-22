@@ -66,37 +66,6 @@ class Gameboard {
     }
 }
 
-class Square {
-    constructor(origin, context, baseUnitSideLength, bgColor, eraseColor) {
-        this.o = origin;
-        this.c = context;
-        this.baseUnitSideLength = baseUnitSideLength;
-        this.bgColor = bgColor;
-        this.eraseColor = eraseColor;
-    }
-
-    display() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
-    }
-
-    drop() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.eraseColor)
-
-        this.o.y += this.baseUnitSideLength;
-
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
-    }
-
-}
 
 const gb = new Gameboard({ x: 0, y: 0 }, ctx, "white", 21, 10, 15)
 gb.drawGameboard();
