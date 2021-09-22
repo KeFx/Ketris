@@ -12,7 +12,20 @@ class Gameboard {
         this.rows = rows;
         this.cols = cols;
         this.baseUnitSideLength = baseUnitSideLength;
+        this.grid = this.newEmptyGrid();
     }
+
+    newEmptyGrid() {
+        const g = new Array(this.rows);
+        for (let i = 0; i < g.length; i++) {
+            g[i] = new Array(this.cols)
+            for (let j = 0; j < g[i].length; j++) {
+                g[i][j] = false;
+            }
+        }
+        return g;
+    }
+
     drawGameboard() {
         this.c.save();
         this.c.beginPath();
@@ -25,52 +38,39 @@ class Gameboard {
         this.c.restore();
     }
 
+    gridToPixel(gridCoordinate) {
+        return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
+    }
+
     startGame() {
+        const currentSquarePos = { x: 4, y: 0 };
+
         const s1 = new Square(
-            { x: (this.cols) * this.baseUnitSideLength / 2, y: 0 },
-            this.c, this.baseUnitSideLength, "lightblue",this.bgColor);
+            this.gridToPixel(currentSquarePos),
+            this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
         s1.display();
 
-        setInterval(function() {s1.drop();}, 600);
-    }
+        const rows = this.rows;
+        const grid = this.grid;
 
-}
-
-class Square {
-    constructor(origin, context, baseUnitSideLength, bgColor, eraseColor) {
-        this.o = origin;
-        this.c = context;
-        this.baseUnitSideLength = baseUnitSideLength;
-        this.bgColor = bgColor;
-        this.eraseColor = eraseColor;
-    }
-
-    display() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
-    }
-
-    drop() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.eraseColor)
-
-        this.o.y += this.baseUnitSideLength;
-
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
+        const gInterval = setInterval(function () {
+            if (currentSquarePos.y < rows - 1) {
+                s1.drop();
+                currentSquarePos.y++
+            } else {
+                grid[currentSquarePos.y][currentSquarePos.x] = true;
+            }
+        },
+            300);
     }
 }
+
 
 const gb = new Gameboard({ x: 0, y: 0 }, ctx, "white", 21, 10, 15)
 gb.drawGameboard();
 gb.startGame();
+// console.table(gb.grid);
 
 function drawRect(c, x, y, height, width, background) {
     c.save();
