@@ -32,7 +32,12 @@ class Gameboard {
 
         s1.display();
 
-        setInterval(function() {s1.drop();}, 600);
+        setInterval(function() {
+                        if ( !s1.hasCollide({x:0, y:315}) ){
+                            s1.drop();
+                        }
+                    },
+         600);
     }
 
 }
@@ -65,6 +70,15 @@ class Square {
             this.baseUnitSideLength,
             this.baseUnitSideLength,
             this.bgColor)
+    }
+
+    hasCollide(obstacle) {
+        if (this.o.y + this.baseUnitSideLength === obstacle.y){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 
