@@ -42,42 +42,53 @@ class Gameboard {
         return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
     }
 
+    occupyCell(pos) {
+        this.grid[pos.y][pos.x] = true;
+    }
+
+    isCellOccupied(pos) {
+        return this.grid[pos.y][pos.x];
+    }
+
+    getNextVerticalPos(pos) {
+        return { y: pos.y + 1, x: pos.x }
+    }
+
     startGame() {
         const currentSquarePos = { x: 4, y: 0 };
 
-        const s1 = new Square(
+        let currentActiveSquare = new Square(
             this.gridToPixel(currentSquarePos),
             this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
-        s1.display();
+        currentActiveSquare.display();
 
-        const rows = this.rows;
-        const grid = this.grid;
+        const gInterval = setInterval(() => {
+            console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
 
-        const gInterval = setInterval(function () {
-            if (currentSquarePos.y < rows - 1) {
-                s1.drop();
+            if (currentSquarePos.y < this.rows - 1 &&
+                !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
+
+                currentActiveSquare.drop();
                 currentSquarePos.y++
             } else {
-                grid[currentSquarePos.y][currentSquarePos.x] = true;
+
+                this.occupyCell(currentSquarePos);
+                console.table(gb.grid);
+
+                currentSquarePos.y = 0;
+                currentActiveSquare = new Square(
+                    this.gridToPixel(currentSquarePos),
+                    this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
+
+                currentActiveSquare.display();
+
             }
         },
-            300);
+            100);
     }
 }
-
 
 const gb = new Gameboard({ x: 0, y: 0 }, ctx, "white", 21, 10, 15)
 gb.drawGameboard();
 gb.startGame();
-// console.table(gb.grid);
-
-function drawRect(c, x, y, height, width, background) {
-    c.save();
-    c.beginPath();
-    c.fillStyle = background;
-
-    c.rect(x, y, width, height);
-    c.fill();
-    c.restore();
-}
