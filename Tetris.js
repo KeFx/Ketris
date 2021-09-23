@@ -45,18 +45,18 @@ class Gameboard {
     startGame() {
         const currentSquarePos = { x: 4, y: 0 };
 
-        let s1 = new Square(
+        let currentActiveSquare = new Square(
             this.gridToPixel(currentSquarePos),
             this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
-        s1.display();
+        currentActiveSquare.display();
 
         const gInterval = setInterval(() => {
             console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
             if (currentSquarePos.y < this.rows - 1 &&
                 this.grid[(currentSquarePos.y) + 1][currentSquarePos.x] !== true) {
 
-                s1.drop();
+                currentActiveSquare.drop();
                 currentSquarePos.y++
             } else {
 
@@ -64,11 +64,11 @@ class Gameboard {
                 console.table(gb.grid);
 
                 currentSquarePos.y = 0;
-                s1 = new Square(
+                currentActiveSquare = new Square(
                     this.gridToPixel(currentSquarePos),
                     this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
-                s1.display();
+                currentActiveSquare.display();
 
             }
         },
