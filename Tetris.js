@@ -42,6 +42,10 @@ class Gameboard {
         return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
     }
 
+    isCellOccupied(pos) {
+        return this.grid[(pos.y) + 1][pos.x] 
+    }
+
     startGame() {
         const currentSquarePos = { x: 4, y: 0 };
 
@@ -53,8 +57,7 @@ class Gameboard {
 
         const gInterval = setInterval(() => {
             console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
-            if (currentSquarePos.y < this.rows - 1 &&
-                this.grid[(currentSquarePos.y) + 1][currentSquarePos.x] !== true) {
+            if (currentSquarePos.y < this.rows - 1 && !this.isCellOccupied(currentSquarePos)) {
 
                 currentActiveSquare.drop();
                 currentSquarePos.y++
