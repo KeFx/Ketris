@@ -45,39 +45,37 @@ class Gameboard {
     startGame() {
         const currentSquarePos = { x: 4, y: 0 };
 
-        const s1 = new Square(
+        let s1 = new Square(
             this.gridToPixel(currentSquarePos),
             this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
         s1.display();
 
-        const rows = this.rows;
-        const grid = this.grid;
+        const gInterval = setInterval(() => {
+            console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
+            if (currentSquarePos.y < this.rows - 1 &&
+                this.grid[(currentSquarePos.y) + 1][currentSquarePos.x] !== true) {
 
-        const gInterval = setInterval(function () {
-            if (currentSquarePos.y < rows - 1) {
                 s1.drop();
                 currentSquarePos.y++
             } else {
-                grid[currentSquarePos.y][currentSquarePos.x] = true;
+
+                this.grid[currentSquarePos.y][currentSquarePos.x] = true;
+                console.table(gb.grid);
+
+                currentSquarePos.y = 0;
+                s1 = new Square(
+                    this.gridToPixel(currentSquarePos),
+                    this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
+
+                s1.display();
+
             }
         },
-            300);
+            100);
     }
 }
-
 
 const gb = new Gameboard({ x: 0, y: 0 }, ctx, "white", 21, 10, 15)
 gb.drawGameboard();
 gb.startGame();
-// console.table(gb.grid);
-
-function drawRect(c, x, y, height, width, background) {
-    c.save();
-    c.beginPath();
-    c.fillStyle = background;
-
-    c.rect(x, y, width, height);
-    c.fill();
-    c.restore();
-}
