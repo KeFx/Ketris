@@ -7,6 +7,13 @@ class Square {
         this.eraseColor = eraseColor;
     }
 
+    eraseSelf() {
+        drawRect(this.c, this.o.x, this.o.y,
+            this.baseUnitSideLength,
+            this.baseUnitSideLength,
+            this.eraseColor)
+    }
+
     display() {
         drawRect(this.c, this.o.x, this.o.y,
             this.baseUnitSideLength,
@@ -14,46 +21,31 @@ class Square {
             this.bgColor)
     }
 
-    drop() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.eraseColor)
-
-        this.o.y += this.baseUnitSideLength;
-
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
+    moveTo(destCood) {
+        this.eraseSelf();
+        this.o = destCood;
+        this.display();
     }
-    
+
+    drop() {
+       this.moveTo({
+           x: this.o.x,
+           y: this.o.y + this.baseUnitSideLength
+       });
+    }
+
     left() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.eraseColor)
-
-        this.o.x -= this.baseUnitSideLength;
-
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
+        this.moveTo({
+            x: this.o.x - this.baseUnitSideLength,
+            y: this.o.y
+        });
     }
 
     right() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.eraseColor)
-
-        this.o.x += this.baseUnitSideLength;
-
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
+        this.moveTo({
+            x: this.o.x + this.baseUnitSideLength,
+            y: this.o.y
+        });
     }
 
 }

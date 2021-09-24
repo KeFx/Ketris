@@ -55,15 +55,31 @@ class Gameboard {
     }
 
     getLeftPos(pos) {
-        return { y: pos.y, x: pos.x-1 };
+        return { y: pos.y, x: pos.x - 1 };
     }
 
     getRightPos(pos) {
-        return { y: pos.y, x: pos.x+1 };
+        return { y: pos.y, x: pos.x + 1 };
+    }
+
+    canMoveDown(currentPos) {
+        return currentPos.y < this.rows - 1 &&
+            !this.isCellOccupied(this.getNextVerticalPos(currentPos));
+    }
+
+    canMoveLeft(currentPos) {
+        return currentPos.x > 0 &&
+            !this.isCellOccupied(this.getLeftPos(currentPos));
+    }
+
+    canMoveRight(currentPos) {
+        return currentPos.x < this.cols - 1 &&
+            !this.isCellOccupied(this.getRightPos(currentPos))
     }
 
     startGame() {
-        const currentSquarePos = { x: 4, y: 0 };
+        const START_POS = { x: 4, y: 0 };
+        let currentSquarePos = {...START_POS};
 
         let currentActiveSquare = new Square(
             this.gridToPixel(currentSquarePos),
@@ -73,30 +89,33 @@ class Gameboard {
 
         window.onkeydown = (e) => {
             let key = e.key || e.keyCode;
-            if (key === "s" || key === "ArrowDown") {
-                console.log(e);
-                if (currentSquarePos.y < this.rows - 1 &&
-                    !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
-                    currentActiveSquare.drop();
-                    currentSquarePos.y++;
-                }
-            } else if (key === "a" || key === "ArrowLeft") {
-                if (currentSquarePos.x > 0 &&
-                    !this.isCellOccupied(this.getLeftPos(currentSquarePos))) {
-                    currentActiveSquare.left();
-                    currentSquarePos.x--;
-                }
-            } else if (key === "d" || key === "ArrowRight") {
-                if (currentSquarePos.x < this.cols - 1 &&
-                    !this.isCellOccupied(this.getRightPos(currentSquarePos))) {
-                    currentActiveSquare.right();
-                    currentSquarePos.x++;
-                }
+            switch (key) {
+
+                case "ArrowDown": case "s":
+                    if (this.canMoveDown(currentSquarePos)) {
+                        currentActiveSquare.drop();
+                        currentSquarePos.y++;
+                    };
+                    break;
+
+                case "ArrowLeft": case "a":
+                    if (this.canMoveLeft(currentSquarePos)) {
+                        currentActiveSquare.left();
+                        currentSquarePos.x--;
+                    };
+                    break;
+
+                case "ArrowRight": case "d":
+                    if (this.canMoveRight(currentSquarePos)) {
+                        currentActiveSquare.right();
+                        currentSquarePos.x++;
+                    };
+                    break;
+
             }
         }
 
         const gInterval = setInterval(() => {
-            // console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
 
             if (currentSquarePos.y < this.rows - 1 &&
                 !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
@@ -106,10 +125,9 @@ class Gameboard {
             } else {
 
                 this.occupyCell(currentSquarePos);
-                // console.table(gb.grid);
 
-                currentSquarePos.y = 0;
-                currentSquarePos.x = 4;
+                currentSquarePos = {...START_POS};
+                console.log(`currentSquarePos: `, currentSquarePos);
                 currentActiveSquare = new Square(
                     this.gridToPixel(currentSquarePos),
                     this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
