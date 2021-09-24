@@ -63,8 +63,15 @@ class Gameboard {
 
         currentActiveSquare.display();
 
+        window.onkeydown = (e) =>{
+            let key = e.key || e.keyCode;
+            if (key === "ArrowLeft"){
+                console.log(e);
+            }
+        }
+
         const gInterval = setInterval(() => {
-            console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
+            // console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
 
             if (currentSquarePos.y < this.rows - 1 &&
                 !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
@@ -74,7 +81,7 @@ class Gameboard {
             } else {
 
                 this.occupyCell(currentSquarePos);
-                console.table(gb.grid);
+                // console.table(gb.grid);
 
                 currentSquarePos.y = 0;
                 currentActiveSquare = new Square(
@@ -85,7 +92,7 @@ class Gameboard {
 
             }
         },
-            100);
+            1000);
     }
 }
 
