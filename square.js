@@ -7,6 +7,13 @@ class Square {
         this.eraseColor = eraseColor;
     }
 
+    eraseSelf() {
+        drawRect(this.c, this.o.x, this.o.y,
+            this.baseUnitSideLength,
+            this.baseUnitSideLength,
+            this.eraseColor)
+    }
+
     display() {
         drawRect(this.c, this.o.x, this.o.y,
             this.baseUnitSideLength,
@@ -14,18 +21,31 @@ class Square {
             this.bgColor)
     }
 
+    moveTo(destCood) {
+        this.eraseSelf();
+        this.o = destCood;
+        this.display();
+    }
+
     drop() {
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.eraseColor)
+       this.moveTo({
+           x: this.o.x,
+           y: this.o.y + this.baseUnitSideLength
+       });
+    }
 
-        this.o.y += this.baseUnitSideLength;
+    left() {
+        this.moveTo({
+            x: this.o.x - this.baseUnitSideLength,
+            y: this.o.y
+        });
+    }
 
-        drawRect(this.c, this.o.x, this.o.y,
-            this.baseUnitSideLength,
-            this.baseUnitSideLength,
-            this.bgColor)
+    right() {
+        this.moveTo({
+            x: this.o.x + this.baseUnitSideLength,
+            y: this.o.y
+        });
     }
 
 }

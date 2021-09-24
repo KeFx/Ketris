@@ -51,11 +51,35 @@ class Gameboard {
     }
 
     getNextVerticalPos(pos) {
-        return { y: pos.y + 1, x: pos.x }
+        return { y: pos.y + 1, x: pos.x };
+    }
+
+    getLeftPos(pos) {
+        return { y: pos.y, x: pos.x - 1 };
+    }
+
+    getRightPos(pos) {
+        return { y: pos.y, x: pos.x + 1 };
+    }
+
+    canMoveDown(currentPos) {
+        return currentPos.y < this.rows - 1 &&
+            !this.isCellOccupied(this.getNextVerticalPos(currentPos));
+    }
+
+    canMoveLeft(currentPos) {
+        return currentPos.x > 0 &&
+            !this.isCellOccupied(this.getLeftPos(currentPos));
+    }
+
+    canMoveRight(currentPos) {
+        return currentPos.x < this.cols - 1 &&
+            !this.isCellOccupied(this.getRightPos(currentPos))
     }
 
     startGame() {
-        const currentSquarePos = { x: 4, y: 0 };
+        const START_POS = { x: 4, y: 0 };
+        let currentSquarePos = {...START_POS};
 
         let currentActiveSquare = new Square(
             this.gridToPixel(currentSquarePos),
@@ -63,8 +87,35 @@ class Gameboard {
 
         currentActiveSquare.display();
 
+        window.onkeydown = (e) => {
+            let key = e.key || e.keyCode;
+            switch (key) {
+
+                case "ArrowDown": case "s":
+                    if (this.canMoveDown(currentSquarePos)) {
+                        currentActiveSquare.drop();
+                        currentSquarePos.y++;
+                    };
+                    break;
+
+                case "ArrowLeft": case "a":
+                    if (this.canMoveLeft(currentSquarePos)) {
+                        currentActiveSquare.left();
+                        currentSquarePos.x--;
+                    };
+                    break;
+
+                case "ArrowRight": case "d":
+                    if (this.canMoveRight(currentSquarePos)) {
+                        currentActiveSquare.right();
+                        currentSquarePos.x++;
+                    };
+                    break;
+
+            }
+        }
+
         const gInterval = setInterval(() => {
-            console.log(this.grid[currentSquarePos.y][currentSquarePos.x]);
 
             if (currentSquarePos.y < this.rows - 1 &&
                 !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
@@ -74,9 +125,9 @@ class Gameboard {
             } else {
 
                 this.occupyCell(currentSquarePos);
-                console.table(gb.grid);
 
-                currentSquarePos.y = 0;
+                currentSquarePos = {...START_POS};
+                console.log(`currentSquarePos: `, currentSquarePos);
                 currentActiveSquare = new Square(
                     this.gridToPixel(currentSquarePos),
                     this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -85,7 +136,7 @@ class Gameboard {
 
             }
         },
-            100);
+            1000);
     }
 }
 
