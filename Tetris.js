@@ -63,10 +63,20 @@ class Gameboard {
 
         currentActiveSquare.display();
 
-        window.onkeydown = (e) =>{
+        window.onkeydown = (e) => {
             let key = e.key || e.keyCode;
-            if (key === "ArrowLeft"){
-                console.log(e);
+            if (key === "ArrowDown") {
+                if (currentSquarePos.y < this.rows - 1 &&
+                    !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
+                    currentActiveSquare.drop();
+                    currentSquarePos.y++;
+                }
+            } else if (key === "ArrowLeft") {
+                if (currentSquarePos.y < this.rows - 1 &&
+                    !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
+                    currentActiveSquare.drop();
+                    currentSquarePos.y++;
+                }
             }
         }
 
@@ -92,7 +102,7 @@ class Gameboard {
 
             }
         },
-            1000);
+            100);
     }
 }
 
