@@ -51,7 +51,15 @@ class Gameboard {
     }
 
     getNextVerticalPos(pos) {
-        return { y: pos.y + 1, x: pos.x }
+        return { y: pos.y + 1, x: pos.x };
+    }
+
+    getLeftPos(pos) {
+        return { y: pos.y, x: pos.x-1 };
+    }
+
+    getRightPos(pos) {
+        return { y: pos.y, x: pos.x+1 };
     }
 
     startGame() {
@@ -65,17 +73,24 @@ class Gameboard {
 
         window.onkeydown = (e) => {
             let key = e.key || e.keyCode;
-            if (key === "ArrowDown") {
+            if (key === "s" || key === "ArrowDown") {
+                console.log(e);
                 if (currentSquarePos.y < this.rows - 1 &&
                     !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
                     currentActiveSquare.drop();
                     currentSquarePos.y++;
                 }
-            } else if (key === "ArrowLeft") {
-                if (currentSquarePos.y < this.rows - 1 &&
-                    !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
-                    currentActiveSquare.drop();
-                    currentSquarePos.y++;
+            } else if (key === "a" || key === "ArrowLeft") {
+                if (currentSquarePos.x > 0 &&
+                    !this.isCellOccupied(this.getLeftPos(currentSquarePos))) {
+                    currentActiveSquare.left();
+                    currentSquarePos.x--;
+                }
+            } else if (key === "d" || key === "ArrowRight") {
+                if (currentSquarePos.x < this.cols - 1 &&
+                    !this.isCellOccupied(this.getRightPos(currentSquarePos))) {
+                    currentActiveSquare.right();
+                    currentSquarePos.x++;
                 }
             }
         }
@@ -94,6 +109,7 @@ class Gameboard {
                 // console.table(gb.grid);
 
                 currentSquarePos.y = 0;
+                currentSquarePos.x = 4;
                 currentActiveSquare = new Square(
                     this.gridToPixel(currentSquarePos),
                     this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -102,7 +118,7 @@ class Gameboard {
 
             }
         },
-            100);
+            1000);
     }
 }
 

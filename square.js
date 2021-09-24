@@ -27,5 +27,33 @@ class Square {
             this.baseUnitSideLength,
             this.bgColor)
     }
+    
+    left() {
+        drawRect(this.c, this.o.x, this.o.y,
+            this.baseUnitSideLength,
+            this.baseUnitSideLength,
+            this.eraseColor)
+
+        this.o.x -= this.baseUnitSideLength;
+
+        drawRect(this.c, this.o.x, this.o.y,
+            this.baseUnitSideLength,
+            this.baseUnitSideLength,
+            this.bgColor)
+    }
+
+    right() {
+        drawRect(this.c, this.o.x, this.o.y,
+            this.baseUnitSideLength,
+            this.baseUnitSideLength,
+            this.eraseColor)
+
+        this.o.x += this.baseUnitSideLength;
+
+        drawRect(this.c, this.o.x, this.o.y,
+            this.baseUnitSideLength,
+            this.baseUnitSideLength,
+            this.bgColor)
+    }
 
 }
