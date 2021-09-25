@@ -54,12 +54,19 @@ class Gameboard {
         return this.grid[pos.y][pos.x];
     }
 
-    hasConflicts(occupiedCells) {
+    hasConflicts(occupiedCells, movement = "down") {
+        
         // console.table(this.grid)
         console.table(occupiedCells);
 
         for (const cell of occupiedCells) {
-            if (cell.y >= this.rows || this.grid[cell.y][cell.x]) {
+            switch(movement){
+                case "down": if(cell.y >= this.rows) {return true;} break;
+                case "right": if(cell.x >= this.cols) {return true;} break;
+                case "left": if(cell.x < 0) {return true;} break;
+            }
+
+            if (this.grid[cell.y][cell.x]) {
                 console.log("somehow get true");
                 return true;
             }
@@ -86,14 +93,19 @@ class Gameboard {
         return !this.hasConflicts(shapeOccupation);
     }
 
-    canMoveLeft(currentPos) {
-        return currentPos.x > 0 &&
-            !this.isCellOccupied(this.getLeftPos(currentPos));
+    canMoveLeft(currentPos, shape) {
+        const shapeOccupation = shape.returnCellsAfterMoveLeft(currentPos);
+
+        return !this.hasConflicts(shapeOccupation, "left");
     }
 
-    canMoveRight(currentPos) {
-        return currentPos.x < this.cols - 1 &&
-            !this.isCellOccupied(this.getRightPos(currentPos))
+    canMoveRight(currentPos, shape) {
+        // return currentPos.x < this.cols - 1 &&
+        //     !this.isCellOccupied(this.getRightPos(currentPos))
+
+        const shapeOccupation = shape.returnCellsAfterMoveRight(currentPos);
+
+        return !this.hasConflicts(shapeOccupation, "right");
     }
 
     startGame() {
@@ -118,14 +130,14 @@ class Gameboard {
                     break;
 
                 case "ArrowLeft": case "a":
-                    if (this.canMoveLeft(currentSquarePos)) {
+                    if (this.canMoveLeft(currentSquarePos, currentActiveSquare)) {
                         currentActiveSquare.left();
                         currentSquarePos.x--;
                     };
                     break;
 
                 case "ArrowRight": case "d":
-                    if (this.canMoveRight(currentSquarePos)) {
+                    if (this.canMoveRight(currentSquarePos, currentActiveSquare)) {
                         currentActiveSquare.right();
                         currentSquarePos.x++;
                     };
