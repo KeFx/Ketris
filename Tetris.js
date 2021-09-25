@@ -81,7 +81,7 @@ class Gameboard {
         const START_POS = { x: 4, y: 0 };
         let currentSquarePos = {...START_POS};
 
-        let currentActiveSquare = new Square(
+        let currentActiveSquare = new OPiece(
             this.gridToPixel(currentSquarePos),
             this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
@@ -117,8 +117,7 @@ class Gameboard {
 
         const gInterval = setInterval(() => {
 
-            if (currentSquarePos.y < this.rows - 1 &&
-                !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
+            if (this.canMoveDown(currentSquarePos)) {
 
                 currentActiveSquare.drop();
                 currentSquarePos.y++
@@ -128,7 +127,7 @@ class Gameboard {
 
                 currentSquarePos = {...START_POS};
                 console.log(`currentSquarePos: `, currentSquarePos);
-                currentActiveSquare = new Square(
+                currentActiveSquare = new OPiece(
                     this.gridToPixel(currentSquarePos),
                     this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
