@@ -42,12 +42,12 @@ class Gameboard {
         return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
     }
 
-    occupyCells(currentPos, shape) {
-        const shapeOccupation = shape.returnCurrentPos(currentPos);
+    occupyCells(handlePoint, shape) {
+        // for (const cell of shape.returnOccupiedCells(handlePoint)) {
+        //     this.grid[cell.y][cell.x] = true;
+        // }
 
-        for (const cell of shapeOccupation) {
-            this.grid[cell.y][cell.x] = true;
-        }
+        shape.returnOccupiedCells(handlePoint).forEach(cell => this.grid[cell.y][cell.x] = true);
     }
 
     isCellOccupied(pos) {
@@ -64,7 +64,7 @@ class Gameboard {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -81,7 +81,7 @@ class Gameboard {
     }
 
     canMoveDown(currentPos, shape) {
-        const shapeOccupation = shape.returnPotentialPos(currentPos);
+        const shapeOccupation = shape.returnCellsAfterDrop(currentPos);
 
         return !this.hasConflicts(shapeOccupation);
     }
@@ -98,7 +98,7 @@ class Gameboard {
 
     startGame() {
         const START_POS = { x: 4, y: 0 };
-        let currentSquarePos = {...START_POS};
+        let currentSquarePos = { ...START_POS };
 
         let currentActiveSquare = new OPiece(
             this.gridToPixel(currentSquarePos),
@@ -143,7 +143,7 @@ class Gameboard {
 
                 this.occupyCells(currentSquarePos, currentActiveSquare);
 
-                currentSquarePos = {...START_POS};
+                currentSquarePos = { ...START_POS };
                 console.log(`currentSquarePos: `, currentSquarePos);
                 currentActiveSquare = new OPiece(
                     this.gridToPixel(currentSquarePos),
