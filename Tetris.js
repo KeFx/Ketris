@@ -77,13 +77,17 @@ class Gameboard {
         return !this.hasConflicts(shapeOccupation, "right");
     }
 
+    newShape(currentSquarePos){
+        return new OPiece(
+            this.gridToPixel(currentSquarePos),
+            this.c, this.baseUnitSideLength, "green", this.bgColor);
+    }
+
     startGame() {
         const START_POS = { x: 4, y: 0 };
         let currentSquarePos = { ...START_POS };
 
-        let currentActiveSquare = new OPiece(
-            this.gridToPixel(currentSquarePos),
-            this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
+        let currentActiveSquare = this.newShape(currentSquarePos);
 
         currentActiveSquare.display();
 
@@ -123,17 +127,15 @@ class Gameboard {
                 this.occupyCells(currentSquarePos, currentActiveSquare);
 
                 currentSquarePos = { ...START_POS };
-                currentActiveSquare = new OPiece(
-                    this.gridToPixel(currentSquarePos),
-                    this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
+                currentActiveSquare = this.newShape(currentSquarePos);
 
                 currentActiveSquare.display();
             }
         },
-            1000);
+            5000);
     }
 }
 
-const gb = new Gameboard({ x: 0, y: 0 }, ctx, "white", 21, 10, 15)
+const gb = new Gameboard({ x: 0, y: 0 }, ctx, "red", 21, 10, 15)
 gb.drawGameboard();
 gb.startGame();
