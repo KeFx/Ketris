@@ -4,7 +4,8 @@ class OPiece {
         this.c = context;
         this.baseUnitSideLength = baseUnitSideLength;
         this.bgColor = bgColor;
-        this.eraseColor = eraseColor;
+        this.eraseColor = eraseColor; 
+
     }
 
     eraseSelf() {
@@ -19,6 +20,13 @@ class OPiece {
             this.baseUnitSideLength  * 2,
             this.baseUnitSideLength * 2,
             this.bgColor)
+    }
+
+    returnPotentialPos(handlePoint) {
+        return [
+            {x: handlePoint.x, y: handlePoint.y + 1},{x: handlePoint.x + 1, y: handlePoint.y + 1},
+            {x: handlePoint.x, y: handlePoint.y + 2},{x: handlePoint.x + 1, y: handlePoint.y + 2}
+        ];
     }
 
     moveTo(destCood) {

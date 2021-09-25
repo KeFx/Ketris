@@ -50,6 +50,20 @@ class Gameboard {
         return this.grid[pos.y][pos.x];
     }
 
+    hasConflicts(occupiedCells) {
+        // console.table(this.grid)
+        console.table(occupiedCells);
+
+        for (const cell of occupiedCells) {
+            if (cell.y >= this.rows || this.grid[cell.y][cell.x]) {
+                console.log("somehow get true");
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     getNextVerticalPos(pos) {
         return { y: pos.y + 1, x: pos.x };
     }
@@ -62,9 +76,10 @@ class Gameboard {
         return { y: pos.y, x: pos.x + 1 };
     }
 
-    canMoveDown(currentPos) {
-        return currentPos.y < this.rows - 1 &&
-            !this.isCellOccupied(this.getNextVerticalPos(currentPos));
+    canMoveDown(currentPos, shape) {
+        const shapeOccupation = shape.returnPotentialPos(currentPos);
+
+        return !this.hasConflicts(shapeOccupation);
     }
 
     canMoveLeft(currentPos) {
@@ -92,7 +107,7 @@ class Gameboard {
             switch (key) {
 
                 case "ArrowDown": case "s":
-                    if (this.canMoveDown(currentSquarePos)) {
+                    if (this.canMoveDown(currentSquarePos, currentActiveSquare)) {
                         currentActiveSquare.drop();
                         currentSquarePos.y++;
                     };
@@ -117,8 +132,7 @@ class Gameboard {
 
         const gInterval = setInterval(() => {
 
-            if (this.canMoveDown(currentSquarePos)) {
-
+            if (this.canMoveDown(currentSquarePos, currentActiveSquare)) {
                 currentActiveSquare.drop();
                 currentSquarePos.y++
             } else {
