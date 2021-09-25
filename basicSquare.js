@@ -1,4 +1,4 @@
-class Square {
+class BasicSquare {
     constructor(origin, context, baseUnitSideLength, bgColor, eraseColor) {
         this.o = origin;
         this.c = context;

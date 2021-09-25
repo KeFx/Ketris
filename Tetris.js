@@ -42,46 +42,46 @@ class Gameboard {
         return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
     }
 
-    occupyCell(pos) {
-        this.grid[pos.y][pos.x] = true;
+    occupyCells(handlePoint, shape) {
+        shape.returnOccupiedCells(handlePoint).forEach(cell => this.grid[cell.y][cell.x] = true);
     }
 
-    isCellOccupied(pos) {
-        return this.grid[pos.y][pos.x];
+    hasConflicts(occupiedCells, movement = "down") {
+        for (const cell of occupiedCells) {
+            switch(movement){
+                case "down": if(cell.y >= this.rows) {return true;} break;
+                case "right": if(cell.x >= this.cols) {return true;} break;
+                case "left": if(cell.x < 0) {return true;} break;
+            }
+
+            if (this.grid[cell.y][cell.x]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    getNextVerticalPos(pos) {
-        return { y: pos.y + 1, x: pos.x };
+    canMoveDown(currentPos, shape) {
+        const shapeOccupation = shape.returnCellsAfterDrop(currentPos);
+        return !this.hasConflicts(shapeOccupation);
     }
 
-    getLeftPos(pos) {
-        return { y: pos.y, x: pos.x - 1 };
+    canMoveLeft(currentPos, shape) {
+        const shapeOccupation = shape.returnCellsAfterMoveLeft(currentPos);
+        return !this.hasConflicts(shapeOccupation, "left");
     }
 
-    getRightPos(pos) {
-        return { y: pos.y, x: pos.x + 1 };
-    }
-
-    canMoveDown(currentPos) {
-        return currentPos.y < this.rows - 1 &&
-            !this.isCellOccupied(this.getNextVerticalPos(currentPos));
-    }
-
-    canMoveLeft(currentPos) {
-        return currentPos.x > 0 &&
-            !this.isCellOccupied(this.getLeftPos(currentPos));
-    }
-
-    canMoveRight(currentPos) {
-        return currentPos.x < this.cols - 1 &&
-            !this.isCellOccupied(this.getRightPos(currentPos))
+    canMoveRight(currentPos, shape) {
+        const shapeOccupation = shape.returnCellsAfterMoveRight(currentPos);
+        return !this.hasConflicts(shapeOccupation, "right");
     }
 
     startGame() {
         const START_POS = { x: 4, y: 0 };
-        let currentSquarePos = {...START_POS};
+        let currentSquarePos = { ...START_POS };
 
-        let currentActiveSquare = new Square(
+        let currentActiveSquare = new OPiece(
             this.gridToPixel(currentSquarePos),
             this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
@@ -92,21 +92,21 @@ class Gameboard {
             switch (key) {
 
                 case "ArrowDown": case "s":
-                    if (this.canMoveDown(currentSquarePos)) {
+                    if (this.canMoveDown(currentSquarePos, currentActiveSquare)) {
                         currentActiveSquare.drop();
                         currentSquarePos.y++;
                     };
                     break;
 
                 case "ArrowLeft": case "a":
-                    if (this.canMoveLeft(currentSquarePos)) {
+                    if (this.canMoveLeft(currentSquarePos, currentActiveSquare)) {
                         currentActiveSquare.left();
                         currentSquarePos.x--;
                     };
                     break;
 
                 case "ArrowRight": case "d":
-                    if (this.canMoveRight(currentSquarePos)) {
+                    if (this.canMoveRight(currentSquarePos, currentActiveSquare)) {
                         currentActiveSquare.right();
                         currentSquarePos.x++;
                     };
@@ -116,24 +116,18 @@ class Gameboard {
         }
 
         const gInterval = setInterval(() => {
-
-            if (currentSquarePos.y < this.rows - 1 &&
-                !this.isCellOccupied(this.getNextVerticalPos(currentSquarePos))) {
-
+            if (this.canMoveDown(currentSquarePos, currentActiveSquare)) {
                 currentActiveSquare.drop();
                 currentSquarePos.y++
             } else {
+                this.occupyCells(currentSquarePos, currentActiveSquare);
 
-                this.occupyCell(currentSquarePos);
-
-                currentSquarePos = {...START_POS};
-                console.log(`currentSquarePos: `, currentSquarePos);
-                currentActiveSquare = new Square(
+                currentSquarePos = { ...START_POS };
+                currentActiveSquare = new OPiece(
                     this.gridToPixel(currentSquarePos),
                     this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
 
                 currentActiveSquare.display();
-
             }
         },
             1000);
