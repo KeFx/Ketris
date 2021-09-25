@@ -42,8 +42,12 @@ class Gameboard {
         return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
     }
 
-    occupyCell(pos) {
-        this.grid[pos.y][pos.x] = true;
+    occupyCells(currentPos, shape) {
+        const shapeOccupation = shape.returnCurrentPos(currentPos);
+
+        for (const cell of shapeOccupation) {
+            this.grid[cell.y][cell.x] = true;
+        }
     }
 
     isCellOccupied(pos) {
@@ -137,7 +141,7 @@ class Gameboard {
                 currentSquarePos.y++
             } else {
 
-                this.occupyCell(currentSquarePos);
+                this.occupyCells(currentSquarePos, currentActiveSquare);
 
                 currentSquarePos = {...START_POS};
                 console.log(`currentSquarePos: `, currentSquarePos);

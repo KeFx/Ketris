@@ -29,6 +29,13 @@ class OPiece {
         ];
     }
 
+    returnCurrentPos(handlePoint) {
+        return [
+            {x: handlePoint.x, y: handlePoint.y},{x: handlePoint.x + 1, y: handlePoint.y},
+            {x: handlePoint.x, y: handlePoint.y + 1},{x: handlePoint.x + 1, y: handlePoint.y + 1}
+        ];
+    }
+
     moveTo(destCood) {
         this.eraseSelf();
         this.o = destCood;
