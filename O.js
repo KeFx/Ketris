@@ -1,6 +1,6 @@
 class OPiece {
-    constructor(origin, context, baseUnitSideLength, bgColor, eraseColor) {
-        this.o = origin;
+    constructor(originHandlePoint, context, baseUnitSideLength, bgColor, eraseColor) {
+        this.handlePoint = originHandlePoint;
         this.c = context;
         this.baseUnitSideLength = baseUnitSideLength;
         this.bgColor = bgColor;
@@ -9,14 +9,14 @@ class OPiece {
     }
 
     eraseSelf() {
-        drawRect(this.c, this.o.x, this.o.y,
+        drawRect(this.c, this.handlePoint.x, this.handlePoint.y,
             this.baseUnitSideLength * 2,
             this.baseUnitSideLength * 2,
             this.eraseColor)
     }
 
     display() {
-        drawRect(this.c, this.o.x, this.o.y,
+        drawRect(this.c, this.handlePoint.x, this.handlePoint.y,
             this.baseUnitSideLength  * 2,
             this.baseUnitSideLength * 2,
             this.bgColor)
@@ -52,28 +52,28 @@ class OPiece {
 
     moveTo(destCood) {
         this.eraseSelf();
-        this.o = destCood;
+        this.handlePoint = destCood;
         this.display();
     }
 
     drop() {
         this.moveTo({
-            x: this.o.x,
-            y: this.o.y + this.baseUnitSideLength
+            x: this.handlePoint.x,
+            y: this.handlePoint.y + this.baseUnitSideLength
         });
     }
 
     left() {
         this.moveTo({
-            x: this.o.x - this.baseUnitSideLength,
-            y: this.o.y
+            x: this.handlePoint.x - this.baseUnitSideLength,
+            y: this.handlePoint.y
         });
     }
 
     right() {
         this.moveTo({
-            x: this.o.x + this.baseUnitSideLength,
-            y: this.o.y
+            x: this.handlePoint.x + this.baseUnitSideLength,
+            y: this.handlePoint.y
         });
     }
 
