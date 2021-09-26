@@ -1,8 +1,4 @@
 class IPiece extends Tetromino {
-    constructor(originHandlePoint, context, baseUnitSideLength, bgColor, eraseColor) {
-        super(originHandlePoint, context, baseUnitSideLength, bgColor, eraseColor);
-    }
-
     fillShapeWithColor(color) {
         drawRect(this.c, this.handlePoint.x, this.handlePoint.y,
             this.baseUnitSideLength,
