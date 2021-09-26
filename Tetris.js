@@ -63,7 +63,7 @@ class Gameboard {
     }
 
     canMoveDown(currentPos, shape) {
-        const shapeOccupation = shape.returnCellsAfterDrop(currentPos);
+        const shapeOccupation = shape.returnCellsAfterDrop(shape.returnOccupiedCells(currentPos));
         return !this.hasConflicts(shapeOccupation);
     }
 
@@ -86,7 +86,6 @@ class Gameboard {
             return new OPiece(
                 this.gridToPixel(currentSquarePos),
                 this.c, this.baseUnitSideLength, "#ffdfbf", this.bgColor);
-
         }
     }
 

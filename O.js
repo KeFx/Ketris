@@ -6,13 +6,6 @@ class OPiece extends Tetromino {
             color)
     }
 
-    returnCellsAfterDrop(handlePoint) {
-        return [
-            {x: handlePoint.x, y: handlePoint.y + 1},{x: handlePoint.x + 1, y: handlePoint.y + 1},
-            {x: handlePoint.x, y: handlePoint.y + 2},{x: handlePoint.x + 1, y: handlePoint.y + 2}
-        ];
-    }
-
     returnCellsAfterMoveRight(handlePoint) {
         return [
             {x: handlePoint.x + 1, y: handlePoint.y},{x: handlePoint.x + 2, y: handlePoint.y},

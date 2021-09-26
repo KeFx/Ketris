@@ -20,8 +20,8 @@ class Tetromino {
         this.fillShapeWithColor(this.bgColor);
     }
 
-    returnCellsAfterDrop(handlePoint) {
-        throw new Error("Please override this function.");
+    returnCellsAfterDrop(occupiedCells) {
+        return occupiedCells.map(c => ({x:c.x, y:c.y + 1}));
     }
 
     returnCellsAfterMoveRight(handlePoint) {
