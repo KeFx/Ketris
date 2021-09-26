@@ -136,6 +136,13 @@ class Gameboard {
                         currentSquarePos.x++;
                     };
                     break;
+                
+                case "ArrowUp": case "w":
+                    if (this.canMoveRight(currentSquarePos, currentActiveSquare)) {
+                        currentActiveSquare.turn();
+                        currentSquarePos.x++;
+                    };
+                    break;
 
             }
         }

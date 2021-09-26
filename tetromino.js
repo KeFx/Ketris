@@ -5,7 +5,7 @@ class Tetromino {
         this.baseUnitSideLength = baseUnitSideLength;
         this.bgColor = bgColor;
         this.eraseColor = eraseColor;
-
+        this.currentCells = this.returnOccupiedCells(this.currentCellHandlePoint);
     }
 
     fillShapeWithColor(color, occupiedCells) {
@@ -22,11 +22,11 @@ class Tetromino {
     }
 
     eraseSelf() {
-        this.fillShapeWithColor(this.eraseColor, this.returnOccupiedCells(this.currentCellHandlePoint));
+        this.fillShapeWithColor(this.eraseColor, this.currentCells);
     }
 
     display() {
-        this.fillShapeWithColor(this.bgColor, this.returnOccupiedCells(this.currentCellHandlePoint));
+        this.fillShapeWithColor(this.bgColor, this.currentCells);
     }
 
     returnCellsAfterDrop(occupiedCells) {
@@ -41,34 +41,33 @@ class Tetromino {
         return occupiedCells.map(c => ({ x: c.x - 1, y: c.y }));
     }
 
+    returnCellsAfterTurn(occupiedCells) {
+        return occupiedCells.map(c => ({ x: c.y, y: c.x }));
+    }
+
     returnOccupiedCells(handlePoint) {
         throw new Error("Please override this function.");
     }
 
-    moveTo(destCood) {
+    redraw(cells) {
         this.eraseSelf();
-        this.currentCellHandlePoint = destCood;
+        this.currentCells = cells;
         this.display();
     }
 
     drop() {
-        this.moveTo({
-            x: this.currentCellHandlePoint.x,
-            y: this.currentCellHandlePoint.y + 1
-        });
+        this.redraw(this.returnCellsAfterDrop(this.currentCells));
     }
 
     left() {
-        this.moveTo({
-            x: this.currentCellHandlePoint.x - 1,
-            y: this.currentCellHandlePoint.y
-        });
+        this.redraw(this.returnCellsAfterMoveLeft(this.currentCells));
     }
 
     right() {
-        this.moveTo({
-            x: this.currentCellHandlePoint.x + 1,
-            y: this.currentCellHandlePoint.y
-        });
+        this.redraw(this.returnCellsAfterMoveRight(this.currentCells));
+    }
+
+    turn() {
+        // this.redraw(this.returnCellsAfterTurn(this.currentCells));
     }
 }
