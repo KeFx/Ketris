@@ -78,9 +78,9 @@ class Gameboard {
     }
 
     newShape(currentSquarePos){
-        return new OPiece(
+        return new IPiece(
             this.gridToPixel(currentSquarePos),
-            this.c, this.baseUnitSideLength, "green", this.bgColor);
+            this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
     }
 
     startGame() {
@@ -136,6 +136,6 @@ class Gameboard {
     }
 }
 
-const gb = new Gameboard({ x: 0, y: 0 }, ctx, "red", 21, 10, 15)
+const gb = new Gameboard({ x: 0, y: 0 }, ctx, "white", 21, 10, 15)
 gb.drawGameboard();
 gb.startGame();

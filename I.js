@@ -26,35 +26,35 @@ class IPiece {
     returnCellsAfterDrop(handlePoint) {
         return [
             {x: handlePoint.x, y: handlePoint.y + 1},{x: handlePoint.x + 1, y: handlePoint.y + 1},
-            {x: handlePoint.x, y: handlePoint.y + 2},{x: handlePoint.x + 1, y: handlePoint.y + 2}
+            {x: handlePoint.x + 2, y: handlePoint.y + 1},{x: handlePoint.x + 3, y: handlePoint.y + 1}
         ];
     }
 
     returnCellsAfterMoveRight(handlePoint) {
         return [
             {x: handlePoint.x + 1, y: handlePoint.y},{x: handlePoint.x + 2, y: handlePoint.y},
-            {x: handlePoint.x + 1, y: handlePoint.y + 1},{x: handlePoint.x + 2, y: handlePoint.y + 1}
+            {x: handlePoint.x + 3, y: handlePoint.y},{x: handlePoint.x + 4, y: handlePoint.y}
         ];
     }
 
     returnCellsAfterMoveLeft(handlePoint) {
         return [
             {x: handlePoint.x - 1, y: handlePoint.y},{x: handlePoint.x, y: handlePoint.y},
-            {x: handlePoint.x - 1, y: handlePoint.y + 1},{x: handlePoint.x, y: handlePoint.y + 1}
+            {x: handlePoint.x + 1, y: handlePoint.y},{x: handlePoint.x + 2, y: handlePoint.y}
         ];
     }
 
     returnOccupiedCells(handlePoint) {
         return [
             {x: handlePoint.x, y: handlePoint.y},{x: handlePoint.x + 1, y: handlePoint.y},
-            {x: handlePoint.x, y: handlePoint.y + 1},{x: handlePoint.x + 1, y: handlePoint.y + 1}
+            {x: handlePoint.x + 2, y: handlePoint.y},{x: handlePoint.x + 3, y: handlePoint.y}
         ];
     }
 
     moveTo(destCood) {
         this.eraseSelf();
         this.handlePoint = destCood;
-        // this.display();
+        this.display();
     }
 
     drop() {
