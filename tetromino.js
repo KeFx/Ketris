@@ -1,35 +1,40 @@
 class Tetromino {
-    constructor(originHandlePoint, context, baseUnitSideLength, bgColor, eraseColor) {
-        this.handlePoint = originHandlePoint;
+    constructor(originCellHandlePoint, context, baseUnitSideLength, bgColor, eraseColor) {
+        this.currentCellHandlePoint = originCellHandlePoint;
         this.c = context;
         this.baseUnitSideLength = baseUnitSideLength;
         this.bgColor = bgColor;
-        this.eraseColor = eraseColor; 
+        this.eraseColor = eraseColor;
 
     }
 
-    fillShapeWithColor(color) {
-        throw new Error("Please override this function.");
+    fillShapeWithColor(color, occupiedCells) {
+        occupiedCells.forEach(c => {
+            drawRect(this.c, c.x * this.baseUnitSideLength, c.y * this.baseUnitSideLength,
+                this.baseUnitSideLength,
+                this.baseUnitSideLength,
+                color)
+        });
     }
 
     eraseSelf() {
-        this.fillShapeWithColor(this.eraseColor);
+        this.fillShapeWithColor(this.eraseColor, this.returnOccupiedCells(this.currentCellHandlePoint));
     }
 
     display() {
-        this.fillShapeWithColor(this.bgColor);
+        this.fillShapeWithColor(this.bgColor, this.returnOccupiedCells(this.currentCellHandlePoint));
     }
 
     returnCellsAfterDrop(occupiedCells) {
-        return occupiedCells.map(c => ({x:c.x, y:c.y + 1}));
+        return occupiedCells.map(c => ({ x: c.x, y: c.y + 1 }));
     }
 
-    returnCellsAfterMoveRight(handlePoint) {
-        throw new Error("Please override this function.");
+    returnCellsAfterMoveRight(occupiedCells) {
+        return occupiedCells.map(c => ({ x: c.x + 1, y: c.y }));
     }
 
-    returnCellsAfterMoveLeft(handlePoint) {
-        throw new Error("Please override this function.");
+    returnCellsAfterMoveLeft(occupiedCells) {
+        return occupiedCells.map(c => ({ x: c.x - 1, y: c.y }));
     }
 
     returnOccupiedCells(handlePoint) {
@@ -38,29 +43,28 @@ class Tetromino {
 
     moveTo(destCood) {
         this.eraseSelf();
-        this.handlePoint = destCood;
+        this.currentCellHandlePoint = destCood;
         this.display();
     }
 
     drop() {
         this.moveTo({
-            x: this.handlePoint.x,
-            y: this.handlePoint.y + this.baseUnitSideLength
+            x: this.currentCellHandlePoint.x,
+            y: this.currentCellHandlePoint.y + 1
         });
     }
 
     left() {
         this.moveTo({
-            x: this.handlePoint.x - this.baseUnitSideLength,
-            y: this.handlePoint.y
+            x: this.currentCellHandlePoint.x - 1,
+            y: this.currentCellHandlePoint.y
         });
     }
 
     right() {
         this.moveTo({
-            x: this.handlePoint.x + this.baseUnitSideLength,
-            y: this.handlePoint.y
+            x: this.currentCellHandlePoint.x + 1,
+            y: this.currentCellHandlePoint.y
         });
     }
-
 }

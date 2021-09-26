@@ -46,7 +46,7 @@ class Gameboard {
         shape.returnOccupiedCells(handlePoint).forEach(cell => this.grid[cell.y][cell.x] = true);
     }
 
-    hasConflicts(occupiedCells, movement = "down") {
+    hasConflicts(occupiedCells, movement) {
         for (const cell of occupiedCells) {
             switch(movement){
                 case "down": if(cell.y >= this.rows) {return true;} break;
@@ -64,27 +64,27 @@ class Gameboard {
 
     canMoveDown(currentPos, shape) {
         const shapeOccupation = shape.returnCellsAfterDrop(shape.returnOccupiedCells(currentPos));
-        return !this.hasConflicts(shapeOccupation);
+        return !this.hasConflicts(shapeOccupation, "down");
     }
 
     canMoveLeft(currentPos, shape) {
-        const shapeOccupation = shape.returnCellsAfterMoveLeft(currentPos);
+        const shapeOccupation = shape.returnCellsAfterMoveLeft(shape.returnOccupiedCells(currentPos));
         return !this.hasConflicts(shapeOccupation, "left");
     }
 
     canMoveRight(currentPos, shape) {
-        const shapeOccupation = shape.returnCellsAfterMoveRight(currentPos);
+        const shapeOccupation = shape.returnCellsAfterMoveRight(shape.returnOccupiedCells(currentPos));
         return !this.hasConflicts(shapeOccupation, "right");
     }
 
     newShape(currentSquarePos){
         if (getRandomInt(2) === 0){
             return new IPiece(
-                this.gridToPixel(currentSquarePos),
+                currentSquarePos,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
         } else {
             return new OPiece(
-                this.gridToPixel(currentSquarePos),
+                currentSquarePos,
                 this.c, this.baseUnitSideLength, "#ffdfbf", this.bgColor);
         }
     }
