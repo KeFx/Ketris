@@ -1,35 +1,81 @@
 class OPiece extends Tetromino {
     returnOccupiedCells(handlePoint) {
-        return [
-            {x: handlePoint.x, y: handlePoint.y},{x: handlePoint.x + 1, y: handlePoint.y},
-            {x: handlePoint.x, y: handlePoint.y + 1},{x: handlePoint.x + 1, y: handlePoint.y + 1}
+        const deltas = [
+            [0, 0], [1, 0],
+            [0, 1], [1, 1]
         ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas);
     }
 }
 
 class IPiece extends Tetromino {
     returnOccupiedCells(handlePoint) {
-        return [
-            {x: handlePoint.x, y: handlePoint.y},{x: handlePoint.x + 1, y: handlePoint.y},
-            {x: handlePoint.x + 2, y: handlePoint.y},{x: handlePoint.x + 3, y: handlePoint.y}
+        const deltas = [
+            [0, 0], 
+            [1, 0],
+            [2, 0], 
+            [3, 0]
         ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas);
     }
 }
 
 class LPiece extends Tetromino {
     returnOccupiedCells(handlePoint) {
-        return [
-            {x: handlePoint.x, y: handlePoint.y},{x: handlePoint.x, y: handlePoint.y + 1},
-            {x: handlePoint.x, y: handlePoint.y + 2},{x: handlePoint.x + 1, y: handlePoint.y + 2}
+        const deltas = [
+            [0, 0], 
+            [0, 1],
+            [0, 2], [1, 2]
         ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas);
+    }
+}
+
+class JPiece extends Tetromino {
+    returnOccupiedCells(handlePoint) {
+        const deltas = [
+                    [0, 0], 
+                    [0, 1],
+            [-1, 2],[0, 2]
+        ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas);
     }
 }
 
 class TPiece extends Tetromino {
     returnOccupiedCells(handlePoint) {
-        return [
-            {x: handlePoint.x, y: handlePoint.y},{x: handlePoint.x + 1, y: handlePoint.y},
-            {x: handlePoint.x + 2, y: handlePoint.y},{x: handlePoint.x + 1, y: handlePoint.y + 1}
+        const deltas = [
+            [0, 0], [1, 0],[2, 0],
+                    [1, 1]
         ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas); 
     }
 }
+
+class SPiece extends Tetromino {
+    returnOccupiedCells(handlePoint) {
+        const deltas = [
+                     [0, 0], [1, 0],
+            [-1, 1], [0, 1]
+        ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas); 
+    }
+}
+
+class ZPiece extends Tetromino {
+    returnOccupiedCells(handlePoint) {
+        const deltas = [
+            [0, 0], [1, 0],
+                    [1, 1], [2, 1]
+        ];
+
+        return this.returnOccupieBasedDeltas(handlePoint, deltas); 
+    }
+}
+

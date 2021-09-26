@@ -79,7 +79,7 @@ class Gameboard {
 
     newShape(currentSquarePos){
         
-        switch (getRandomInt(4)) {
+        switch (getRandomInt(7)) {
             case 0: return new IPiece(
                 currentSquarePos,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -88,10 +88,19 @@ class Gameboard {
                 this.c, this.baseUnitSideLength, "#adff2f", this.bgColor);
             case 2:return new LPiece(
                 currentSquarePos,
-                this.c, this.baseUnitSideLength, "#FFA500", this.bgColor);
-            case 3:return new TPiece(
+                this.c, this.baseUnitSideLength, "#ffae8c", this.bgColor);
+            case 3:return new JPiece(
+                currentSquarePos,
+                this.c, this.baseUnitSideLength, "#4e63e6", this.bgColor);
+            case 4:return new TPiece(
                 currentSquarePos,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
+            case 5:return new SPiece(
+                currentSquarePos,
+                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
+            case 6:return new ZPiece(
+                currentSquarePos,
+                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);    
         }
     }
 

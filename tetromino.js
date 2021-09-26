@@ -17,6 +17,10 @@ class Tetromino {
         });
     }
 
+    returnOccupieBasedDeltas(handlePoint, deltas) {
+        return deltas.map(d => ({x: handlePoint.x + d[0], y: handlePoint.y + d[1]}));
+    }
+
     eraseSelf() {
         this.fillShapeWithColor(this.eraseColor, this.returnOccupiedCells(this.currentCellHandlePoint));
     }
