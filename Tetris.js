@@ -78,14 +78,20 @@ class Gameboard {
     }
 
     newShape(currentSquarePos){
-        if (getRandomInt(2) === 0){
-            return new IPiece(
+        
+        switch (getRandomInt(4)) {
+            case 0: return new IPiece(
                 currentSquarePos,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
-        } else {
-            return new OPiece(
+            case 1:return new OPiece(
                 currentSquarePos,
-                this.c, this.baseUnitSideLength, "#ffdfbf", this.bgColor);
+                this.c, this.baseUnitSideLength, "#adff2f", this.bgColor);
+            case 2:return new LPiece(
+                currentSquarePos,
+                this.c, this.baseUnitSideLength, "#FFA500", this.bgColor);
+            case 3:return new TPiece(
+                currentSquarePos,
+                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
         }
     }
 
