@@ -78,9 +78,16 @@ class Gameboard {
     }
 
     newShape(currentSquarePos){
-        return new IPiece(
-            this.gridToPixel(currentSquarePos),
-            this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
+        if (getRandomInt(2) === 0){
+            return new IPiece(
+                this.gridToPixel(currentSquarePos),
+                this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
+        } else {
+            return new OPiece(
+                this.gridToPixel(currentSquarePos),
+                this.c, this.baseUnitSideLength, "#ffdfbf", this.bgColor);
+
+        }
     }
 
     startGame() {
@@ -132,7 +139,7 @@ class Gameboard {
                 currentActiveSquare.display();
             }
         },
-            5000);
+            200);
     }
 }
 

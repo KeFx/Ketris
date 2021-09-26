@@ -6,3 +6,7 @@ function drawRect(c, x, y, height, width, background) {
 
     c.restore();
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
