@@ -80,7 +80,7 @@ class Gameboard {
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
             case 1: return new OPiece(
                 originCellHandlePoint,
-                this.c, this.baseUnitSideLength, "#adff2f", this.bgColor);
+                this.c, this.baseUnitSideLength, "#edf55f", this.bgColor);
             case 2: return new LPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#ffae8c", this.bgColor);
@@ -98,7 +98,7 @@ class Gameboard {
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
         }
     }
-
+    
     startGame() {
         const START_POS = { x: 4, y: 0 };
 
