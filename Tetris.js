@@ -38,12 +38,8 @@ class Gameboard {
         this.c.restore();
     }
 
-    gridToPixel(gridCoordinate) {
-        return { x: gridCoordinate.x * this.baseUnitSideLength, y: gridCoordinate.y * this.baseUnitSideLength }
-    }
-
-    occupyCells(handlePoint, shape) {
-        shape.returnOccupiedCells(handlePoint).forEach(cell => this.grid[cell.y][cell.x] = true);
+    occupyCells(shape) {
+        shape.currentCells.forEach(cell => this.grid[cell.y][cell.x] = true);
     }
 
     hasConflicts(occupiedCells, movement) {
@@ -62,53 +58,51 @@ class Gameboard {
         return false;
     }
 
-    canMoveDown(currentPos, shape) {
-        const shapeOccupation = shape.returnCellsAfterDrop(shape.returnOccupiedCells(currentPos));
+    canMoveDown(shape) {
+        const shapeOccupation = shape.returnCellsAfterDrop();
         return !this.hasConflicts(shapeOccupation, "down");
     }
 
-    canMoveLeft(currentPos, shape) {
-        const shapeOccupation = shape.returnCellsAfterMoveLeft(shape.returnOccupiedCells(currentPos));
+    canMoveLeft(shape) {
+        const shapeOccupation = shape.returnCellsAfterMoveLeft();
         return !this.hasConflicts(shapeOccupation, "left");
     }
 
-    canMoveRight(currentPos, shape) {
-        const shapeOccupation = shape.returnCellsAfterMoveRight(shape.returnOccupiedCells(currentPos));
+    canMoveRight(shape) {
+        const shapeOccupation = shape.returnCellsAfterMoveRight();
         return !this.hasConflicts(shapeOccupation, "right");
     }
 
-    newShape(currentSquarePos){
-        
+    newShape(originCellHandlePoint){
         switch (getRandomInt(7)) {
             case 0: return new IPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
             case 1:return new OPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#adff2f", this.bgColor);
             case 2:return new LPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#ffae8c", this.bgColor);
             case 3:return new JPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#4e63e6", this.bgColor);
             case 4:return new TPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
             case 5:return new SPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
             case 6:return new ZPiece(
-                currentSquarePos,
+                originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);    
         }
     }
 
     startGame() {
         const START_POS = { x: 4, y: 0 };
-        let currentSquarePos = { ...START_POS };
 
-        let currentActiveSquare = this.newShape(currentSquarePos);
+        let currentActiveSquare = this.newShape(START_POS);
 
         currentActiveSquare.display();
 
@@ -117,30 +111,26 @@ class Gameboard {
             switch (key) {
 
                 case "ArrowDown": case "s":
-                    if (this.canMoveDown(currentSquarePos, currentActiveSquare)) {
+                    if (this.canMoveDown(currentActiveSquare)) {
                         currentActiveSquare.drop();
-                        currentSquarePos.y++;
                     };
                     break;
 
                 case "ArrowLeft": case "a":
-                    if (this.canMoveLeft(currentSquarePos, currentActiveSquare)) {
+                    if (this.canMoveLeft(currentActiveSquare)) {
                         currentActiveSquare.left();
-                        currentSquarePos.x--;
                     };
                     break;
 
                 case "ArrowRight": case "d":
-                    if (this.canMoveRight(currentSquarePos, currentActiveSquare)) {
+                    if (this.canMoveRight(currentActiveSquare)) {
                         currentActiveSquare.right();
-                        currentSquarePos.x++;
                     };
                     break;
                 
                 case "ArrowUp": case "w":
-                    if (this.canMoveRight(currentSquarePos, currentActiveSquare)) {
+                    if (this.canMoveRight(currentActiveSquare)) {
                         currentActiveSquare.turn();
-                        currentSquarePos.x++;
                     };
                     break;
 
@@ -148,19 +138,15 @@ class Gameboard {
         }
 
         const gInterval = setInterval(() => {
-            if (this.canMoveDown(currentSquarePos, currentActiveSquare)) {
+            if (this.canMoveDown(currentActiveSquare)) {
                 currentActiveSquare.drop();
-                currentSquarePos.y++
             } else {
-                this.occupyCells(currentSquarePos, currentActiveSquare);
-
-                currentSquarePos = { ...START_POS };
-                currentActiveSquare = this.newShape(currentSquarePos);
-
+                this.occupyCells(currentActiveSquare);
+                currentActiveSquare = this.newShape(START_POS);
                 currentActiveSquare.display();
             }
         },
-            200);
+            1000);
     }
 }
 

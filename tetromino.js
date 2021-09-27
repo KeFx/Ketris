@@ -1,14 +1,16 @@
 class Tetromino {
     constructor(originCellHandlePoint, context, baseUnitSideLength, bgColor, eraseColor) {
-        this.currentCellHandlePoint = originCellHandlePoint;
         this.c = context;
         this.baseUnitSideLength = baseUnitSideLength;
         this.bgColor = bgColor;
         this.eraseColor = eraseColor;
-        this.currentCells = this.returnOccupiedCells(this.currentCellHandlePoint);
+        this.currentCells = this.returnOccupiedCells(originCellHandlePoint);
     }
 
     fillShapeWithColor(color, occupiedCells) {
+        console.log("inside fillShapeWithColor");
+        console.table(occupiedCells);
+        console.log("occupiedCells", occupiedCells);
         occupiedCells.forEach(c => {
             drawRect(this.c, c.x * this.baseUnitSideLength, c.y * this.baseUnitSideLength,
                 this.baseUnitSideLength,
@@ -29,20 +31,21 @@ class Tetromino {
         this.fillShapeWithColor(this.bgColor, this.currentCells);
     }
 
-    returnCellsAfterDrop(occupiedCells) {
-        return occupiedCells.map(c => ({ x: c.x, y: c.y + 1 }));
+    returnCellsAfterDrop() {
+        console.table(this.currentCells);
+        return this.currentCells.map(c => ({ x: c.x, y: c.y + 1 }));
     }
 
-    returnCellsAfterMoveRight(occupiedCells) {
-        return occupiedCells.map(c => ({ x: c.x + 1, y: c.y }));
+    returnCellsAfterMoveRight() {
+        return this.currentCells.map(c => ({ x: c.x + 1, y: c.y }));
     }
 
-    returnCellsAfterMoveLeft(occupiedCells) {
-        return occupiedCells.map(c => ({ x: c.x - 1, y: c.y }));
+    returnCellsAfterMoveLeft() {
+        return this.currentCells.map(c => ({ x: c.x - 1, y: c.y }));
     }
 
-    returnCellsAfterTurn(occupiedCells) {
-        return occupiedCells.map(c => ({ x: c.y, y: c.x }));
+    returnCellsAfterTurn() {
+        return(this.currentCells).map(c => ({ x: c.y, y: c.x }));
     }
 
     returnOccupiedCells(handlePoint) {
@@ -51,11 +54,18 @@ class Tetromino {
 
     redraw(cells) {
         this.eraseSelf();
+        console.log("after erase");
+        console.table(this.currentCells);
         this.currentCells = cells;
+        console.log("after updates");
+        console.table(this.currentCells);
+
         this.display();
     }
 
     drop() {
+        console.log("inside drop");
+        console.table(this.currentCells);
         this.redraw(this.returnCellsAfterDrop(this.currentCells));
     }
 
