@@ -44,10 +44,10 @@ class Gameboard {
 
     hasConflicts(occupiedCells, movement) {
         for (const cell of occupiedCells) {
-            switch(movement){
-                case "down": if(cell.y >= this.rows) {return true;} break;
-                case "right": if(cell.x >= this.cols) {return true;} break;
-                case "left": if(cell.x < 0) {return true;} break;
+            switch (movement) {
+                case "down": if (cell.y >= this.rows) { return true; } break;
+                case "right": if (cell.x >= this.cols) { return true; } break;
+                case "left": if (cell.x < 0) { return true; } break;
             }
 
             if (this.grid[cell.y][cell.x]) {
@@ -73,29 +73,29 @@ class Gameboard {
         return !this.hasConflicts(shapeOccupation, "right");
     }
 
-    newShape(originCellHandlePoint){
+    newShape(originCellHandlePoint) {
         switch (getRandomInt(7)) {
             case 0: return new IPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
-            case 1:return new OPiece(
+            case 1: return new OPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#adff2f", this.bgColor);
-            case 2:return new LPiece(
+            case 2: return new LPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#ffae8c", this.bgColor);
-            case 3:return new JPiece(
+            case 3: return new JPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#4e63e6", this.bgColor);
-            case 4:return new TPiece(
+            case 4: return new TPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
-            case 5:return new SPiece(
+            case 5: return new SPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
-            case 6:return new ZPiece(
+            case 6: return new ZPiece(
                 originCellHandlePoint,
-                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);    
+                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
         }
     }
 
@@ -127,7 +127,7 @@ class Gameboard {
                         currentActiveSquare.right();
                     };
                     break;
-                
+
                 case "ArrowUp": case "w":
                     if (this.canMoveRight(currentActiveSquare)) {
                         currentActiveSquare.turn();
@@ -146,7 +146,13 @@ class Gameboard {
                 currentActiveSquare.display();
             }
         },
-            1000);
+            500);
+
+        setInterval(() => {
+            window.scroll(0, 10);
+            window.scroll(0, 11);
+        }, 1)
+
     }
 }
 
