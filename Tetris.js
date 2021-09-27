@@ -13,6 +13,7 @@ class Gameboard {
         this.cols = cols;
         this.baseUnitSideLength = baseUnitSideLength;
         this.grid = this.newEmptyGrid();
+        this.pocket = [0, 1, 2, 3, 4, 5, 6];
     }
 
     newEmptyGrid() {
@@ -73,8 +74,15 @@ class Gameboard {
         return !this.hasConflicts(shapeOccupation, "right");
     }
 
+    getNextInPocket() {
+        if(this.pocket.length === 0){
+            this.pocket.push(0, 1, 2, 3, 4, 5, 6);
+        };
+        return this.pocket.splice(getRandomInt(this.pocket.length), 1)[0];
+    }
+
     newShape(originCellHandlePoint) {
-        switch (getRandomInt(7)) {
+        switch (this.getNextInPocket()) {
             case 0: return new IPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -83,22 +91,22 @@ class Gameboard {
                 this.c, this.baseUnitSideLength, "#edf55f", this.bgColor);
             case 2: return new LPiece(
                 originCellHandlePoint,
-                this.c, this.baseUnitSideLength, "#ffae8c", this.bgColor);
+                this.c, this.baseUnitSideLength, "#f5a651", this.bgColor);
             case 3: return new JPiece(
                 originCellHandlePoint,
-                this.c, this.baseUnitSideLength, "#4e63e6", this.bgColor);
+                this.c, this.baseUnitSideLength, "#7788f2", this.bgColor);
             case 4: return new TPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
             case 5: return new SPiece(
                 originCellHandlePoint,
-                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
+                this.c, this.baseUnitSideLength, "#84f094", this.bgColor);
             case 6: return new ZPiece(
                 originCellHandlePoint,
-                this.c, this.baseUnitSideLength, "#c585f7", this.bgColor);
+                this.c, this.baseUnitSideLength, "#f08487", this.bgColor);
         }
     }
-    
+
     startGame() {
         const START_POS = { x: 4, y: 0 };
 
