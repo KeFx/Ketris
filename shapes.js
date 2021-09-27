@@ -25,9 +25,9 @@ class IPiece extends Tetromino {
 class LPiece extends Tetromino {
     returnOccupiedCells(handlePoint) {
         const deltas = [
-            [0, 0], 
-            [0, 1],
-            [0, 2], [1, 2]
+            [0, -1], 
+            [0,  0],
+            [0,  1],[1,  1]
         ];
 
         return this.returnOccupieBasedDeltas(handlePoint, deltas);
@@ -37,9 +37,9 @@ class LPiece extends Tetromino {
 class JPiece extends Tetromino {
     returnOccupiedCells(handlePoint) {
         const deltas = [
-                    [0, 0], 
-                    [0, 1],
-            [-1, 2],[0, 2]
+                    [0, -1], 
+                    [0,  0],
+            [-1, 1],[0,  1]
         ];
 
         return this.returnOccupieBasedDeltas(handlePoint, deltas);
