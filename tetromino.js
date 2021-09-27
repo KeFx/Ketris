@@ -8,9 +8,6 @@ class Tetromino {
     }
 
     fillShapeWithColor(color, occupiedCells) {
-        console.log("inside fillShapeWithColor");
-        console.table(occupiedCells);
-        console.log("occupiedCells", occupiedCells);
         occupiedCells.forEach(c => {
             drawRect(this.c, c.x * this.baseUnitSideLength, c.y * this.baseUnitSideLength,
                 this.baseUnitSideLength,
@@ -32,7 +29,6 @@ class Tetromino {
     }
 
     returnCellsAfterDrop() {
-        console.table(this.currentCells);
         return this.currentCells.map(c => ({ x: c.x, y: c.y + 1 }));
     }
 
@@ -54,18 +50,11 @@ class Tetromino {
 
     redraw(cells) {
         this.eraseSelf();
-        console.log("after erase");
-        console.table(this.currentCells);
         this.currentCells = cells;
-        console.log("after updates");
-        console.table(this.currentCells);
-
         this.display();
     }
 
     drop() {
-        console.log("inside drop");
-        console.table(this.currentCells);
         this.redraw(this.returnCellsAfterDrop(this.currentCells));
     }
 
