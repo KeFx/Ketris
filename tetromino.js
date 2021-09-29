@@ -24,15 +24,15 @@ class Tetromino {
     parsePosture(shape) {
         let coords = [];
 
-        for (let y = 0; y <= shape.length - 1; y++) {
-            for (let x = 0; x <= [...shape[y]].length - 1; x++) {
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < [...shape[y]].length; x++) {
                 if (shape[y][x] === '1') {
                     coords.push([x, y]);
                 }
             }
         }
 
-        return coords
+        return coords;
     }
 
     returnDeltas(c1, c2) {
@@ -65,15 +65,8 @@ class Tetromino {
 
     returnCellsAfterTurn() {
         let pos1 = this.parsePosture(this.postures()[this.currentPosture]);
-        let pos2;
-
-        if (this.currentPosture === 3) {
-            pos2 = this.parsePosture(this.postures()[0]);
-            this.currentPosture = 0;
-        } else {
-            pos2 = this.parsePosture(this.postures()[this.currentPosture + 1]);
-            this.currentPosture += 1;
-        }
+        const nextPostureIndex = (this.currentPosture + 1) % 4
+        let pos2 =  this.parsePosture(this.postures()[nextPostureIndex]);;
 
         let deltas = this.returnDeltas(pos1, pos2);
         let cellsAfterTurn = [];
@@ -86,7 +79,8 @@ class Tetromino {
     }
 
     returnOccupiedCells(handlePoint) {
-        throw new Error("Please override this function.");
+        return this.returnOccupieBasedDeltas(handlePoint, 
+            this.parsePosture(this.postures()[0]));
     }
 
     redraw(cells) {
@@ -109,5 +103,6 @@ class Tetromino {
 
     turn() {
         this.redraw(this.returnCellsAfterTurn(this.currentCells));
+        this.currentPosture = (this.currentPosture + 1) % 4
     }
 }

@@ -1,4 +1,28 @@
 class OPiece extends Tetromino {
+    postures(){
+        return [
+            ['0110',
+             '0110',
+             '0000',
+             '0000'],
+
+             ['0110',
+             '0110',
+             '0000',
+             '0000'],
+
+             ['0110',
+             '0110',
+             '0000',
+             '0000'],
+
+             ['0110',
+             '0110',
+             '0000',
+             '0000'],
+        ];
+    }
+
     returnOccupiedCells(handlePoint) {
         const deltas = [
             [0, 0], [1, 0],
@@ -34,72 +58,115 @@ class IPiece extends Tetromino {
         ];
     }
 
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-            [0, 0], 
-            [1, 0],
-            [2, 0], 
-            [3, 0]
-        ];
-
-        return this.returnOccupieBasedDeltas(handlePoint, deltas);
-    }
 }
 
 class LPiece extends Tetromino {
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-            [0, -1], 
-            [0,  0],
-            [0,  1],[1,  1]
-        ];
+    postures(){
+        return [
+            ['001',
+             '111',
+             '000'],
 
-        return this.returnOccupieBasedDeltas(handlePoint, deltas);
+            ['010',
+             '010',
+             '011'],
+
+            ['000',
+             '111',
+             '100'],
+
+            ['110',
+             '010',
+             '010'],
+        ];
     }
 }
 
 class JPiece extends Tetromino {
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-                    [0, -1], 
-                    [0,  0],
-            [-1, 1],[0,  1]
-        ];
+    postures(){
+        return [
+            ['100',
+             '111',
+             '000'],
 
-        return this.returnOccupieBasedDeltas(handlePoint, deltas);
+            ['011',
+             '010',
+             '010'],
+
+             ['111',
+              '001',
+              '000'],
+
+            ['010',
+             '010',
+             '110'],
+        ];
     }
 }
 
 class TPiece extends Tetromino {
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-            [0, 0], [1, 0],[2, 0],
-                    [1, 1]
-        ];
+    postures(){
+        return [
+            ['010',
+             '111',
+             '000'],
 
-        return this.returnOccupieBasedDeltas(handlePoint, deltas); 
+            ['010',
+             '011',
+             '010'],
+
+            ['000',
+             '111',
+             '010'],
+
+             ['010',
+              '110',
+              '010'],
+        ];
     }
 }
 
 class SPiece extends Tetromino {
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-                     [0, 0], [1, 0],
-            [-1, 1], [0, 1]
-        ];
+    postures(){
+        return [
+            ['011',
+             '110',
+             '000'],
 
-        return this.returnOccupieBasedDeltas(handlePoint, deltas); 
+            ['010',
+             '011',
+             '001'],
+
+            ['000',
+             '011',
+             '110'],
+
+             ['100',
+              '110',
+              '010'],
+        ];
     }
 }
 
 class ZPiece extends Tetromino {
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-            [0, 0], [1, 0],
-                    [1, 1], [2, 1]
-        ];
+    postures(){
+        return [
+            ['110',
+             '011',
+             '000'],
 
-        return this.returnOccupieBasedDeltas(handlePoint, deltas); 
+            ['001',
+             '011',
+             '010'],
+
+            ['000',
+             '110',
+             '011'],
+
+             ['010',
+              '110',
+              '100'],
+        ];
     }
 }
 

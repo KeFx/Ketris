@@ -49,6 +49,7 @@ class Gameboard {
                 case "down": if (cell.y >= this.rows) { return true; } break;
                 case "right": if (cell.x >= this.cols) { return true; } break;
                 case "left": if (cell.x < 0) { return true; } break;
+                case "turn": if (cell.x >= this.cols || cell.x < 0 || cell.y>= this.rows) { return true; } break;
             }
 
             if (this.grid[cell.y][cell.x]) {
@@ -74,6 +75,11 @@ class Gameboard {
         return !this.hasConflicts(shapeOccupation, "right");
     }
 
+    canTurn(shape) {
+        const shapeOccupation = shape.returnCellsAfterTurn();
+        return !this.hasConflicts(shapeOccupation, "turn");
+    }
+
     getNextInPocket() {
         if(this.pocket.length === 0){
             this.pocket.push(0, 1, 2, 3, 4, 5, 6);
@@ -82,8 +88,8 @@ class Gameboard {
     }
 
     newShape(originCellHandlePoint) {
-        // switch (this.getNextInPocket()) {
-            switch (0) {
+        switch (this.getNextInPocket()) {
+            // switch (4) {
             case 0: return new IPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -138,7 +144,7 @@ class Gameboard {
                     break;
 
                 case "ArrowUp": case "w":
-                    if (this.canMoveRight(currentActiveSquare)) {
+                    if (this.canTurn(currentActiveSquare)) {
                         currentActiveSquare.turn();
                     };
                     break;
