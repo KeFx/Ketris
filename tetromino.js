@@ -5,6 +5,7 @@ class Tetromino {
         this.bgColor = bgColor;
         this.eraseColor = eraseColor;
         this.currentCells = this.returnOccupiedCells(originCellHandlePoint);
+        this.currentPosture = 0;
     }
 
     fillShapeWithColor(color, occupiedCells) {
@@ -17,7 +18,29 @@ class Tetromino {
     }
 
     returnOccupieBasedDeltas(handlePoint, deltas) {
-        return deltas.map(d => ({x: handlePoint.x + d[0], y: handlePoint.y + d[1]}));
+        return deltas.map(d => ({ x: handlePoint.x + d[0], y: handlePoint.y + d[1] }));
+    }
+
+    parsePosture(shape) {
+        let coords = [];
+
+        for (let y = 0; y <= shape.length - 1; y++) {
+            for (let x = 0; x <= [...shape[y]].length - 1; x++) {
+                if (shape[y][x] === '1') {
+                    coords.push([x, y]);
+                }
+            }
+        }
+
+        return coords
+    }
+
+    returnDeltas(c1, c2) {
+        let deltas = [];
+        for (let e = 0; e <= c1.length - 1; e++) {
+            deltas.push({ x: c1[e][0] - c2[e][0], y: c1[e][1] - c2[e][1] })
+        }
+        return deltas;
     }
 
     eraseSelf() {
@@ -41,7 +64,25 @@ class Tetromino {
     }
 
     returnCellsAfterTurn() {
-        return(this.currentCells).map(c => ({ x: c.y, y: c.x }));
+        let pos1 = this.parsePosture(this.postures()[this.currentPosture]);
+        let pos2;
+
+        if (this.currentPosture === 3) {
+            pos2 = this.parsePosture(this.postures()[0]);
+            this.currentPosture = 0;
+        } else {
+            pos2 = this.parsePosture(this.postures()[this.currentPosture + 1]);
+            this.currentPosture += 1;
+        }
+
+        let deltas = this.returnDeltas(pos1, pos2);
+        let cellsAfterTurn = [];
+
+        for (let e = 0; e <= this.currentCells.length - 1; e++) {
+            cellsAfterTurn.push({ x: this.currentCells[e].x - deltas[e].x, y: this.currentCells[e].y - deltas[e].y })
+        }
+
+        return cellsAfterTurn;
     }
 
     returnOccupiedCells(handlePoint) {
@@ -67,6 +108,6 @@ class Tetromino {
     }
 
     turn() {
-        // this.redraw(this.returnCellsAfterTurn(this.currentCells));
+        this.redraw(this.returnCellsAfterTurn(this.currentCells));
     }
 }

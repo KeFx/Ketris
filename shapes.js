@@ -10,6 +10,30 @@ class OPiece extends Tetromino {
 }
 
 class IPiece extends Tetromino {
+    postures(){
+        return [
+            ['0000',
+             '1111',
+             '0000',
+             '0000'],
+
+             ['0010',
+              '0010',
+              '0010', 
+              '0010'],
+
+             ['0000',
+              '0000',
+              '1111',
+              '0000'],
+
+             ['0100',
+              '0100',
+              '0100',
+              '0100'],
+        ];
+    }
+
     returnOccupiedCells(handlePoint) {
         const deltas = [
             [0, 0], 

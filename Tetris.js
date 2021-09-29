@@ -82,7 +82,8 @@ class Gameboard {
     }
 
     newShape(originCellHandlePoint) {
-        switch (this.getNextInPocket()) {
+        // switch (this.getNextInPocket()) {
+            switch (0) {
             case 0: return new IPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -154,7 +155,7 @@ class Gameboard {
                 currentActiveSquare.display();
             }
         },
-            500);
+            800);
 
         setInterval(() => {
             window.scroll(0, 10);
