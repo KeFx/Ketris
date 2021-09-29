@@ -36,11 +36,7 @@ class Tetromino {
     }
 
     returnDeltas(c1, c2) {
-        let deltas = [];
-        for (let e = 0; e <= c1.length - 1; e++) {
-            deltas.push({ x: c1[e][0] - c2[e][0], y: c1[e][1] - c2[e][1] })
-        }
-        return deltas;
+        return  c1.map( (e, i) => ({x: e[0] - c2[i][0], y: e[1] - c2[i][1]})); 
     }
 
     eraseSelf() {

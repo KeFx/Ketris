@@ -21,7 +21,7 @@ class Gameboard {
         for (let i = 0; i < g.length; i++) {
             g[i] = new Array(this.cols)
             for (let j = 0; j < g[i].length; j++) {
-                g[i][j] = false;
+                g[i][j] = "white";
             }
         }
         return g;
@@ -39,8 +39,40 @@ class Gameboard {
         this.c.restore();
     }
 
-    occupyCells(shape) {
-        shape.currentCells.forEach(cell => this.grid[cell.y][cell.x] = true);
+    newEmptyRow() {
+        let newEmptyRow =[];
+        for (let c = 0; c < this.cols; c++) {
+            newEmptyRow.push("white")
+        }
+        return newEmptyRow; 
+    }
+
+    isRowFull(row) {
+        return row.every(c => c != 'white');
+    }
+
+    updateGrid() {
+        this.grid.forEach((row, i) => {
+            if (this.isRowFull(row)) {
+                this.grid.splice(i, 1);
+                this.grid.unshift(this.newEmptyRow());
+            }
+        })
+    }
+
+    redrawGrid() {
+        for (let row = 0; row < this.grid.length; row++) {
+            for (let col = 0; col < this.grid[row].length; col++) {
+                drawRect(this.c, col * this.baseUnitSideLength, row * this.baseUnitSideLength,
+                    this.baseUnitSideLength,
+                    this.baseUnitSideLength,
+                    this.grid[row][col])
+            }
+        }
+    }
+
+    occupyCells(shape, color) {
+        shape.currentCells.forEach(cell => this.grid[cell.y][cell.x] = color);
     }
 
     hasConflicts(occupiedCells, movement) {
@@ -49,10 +81,10 @@ class Gameboard {
                 case "down": if (cell.y >= this.rows) { return true; } break;
                 case "right": if (cell.x >= this.cols) { return true; } break;
                 case "left": if (cell.x < 0) { return true; } break;
-                case "turn": if (cell.x >= this.cols || cell.x < 0 || cell.y>= this.rows) { return true; } break;
+                case "turn": if (cell.x >= this.cols || cell.x < 0 || cell.y >= this.rows) { return true; } break;
             }
 
-            if (this.grid[cell.y][cell.x]) {
+            if (this.grid[cell.y][cell.x] != "white") {
                 return true;
             }
         }
@@ -81,7 +113,7 @@ class Gameboard {
     }
 
     getNextInPocket() {
-        if(this.pocket.length === 0){
+        if (this.pocket.length === 0) {
             this.pocket.push(0, 1, 2, 3, 4, 5, 6);
         };
         return this.pocket.splice(getRandomInt(this.pocket.length), 1)[0];
@@ -89,7 +121,7 @@ class Gameboard {
 
     newShape(originCellHandlePoint) {
         switch (this.getNextInPocket()) {
-            // switch (4) {
+            // switch (1) {
             case 0: return new IPiece(
                 originCellHandlePoint,
                 this.c, this.baseUnitSideLength, "lightblue", this.bgColor);
@@ -148,7 +180,6 @@ class Gameboard {
                         currentActiveSquare.turn();
                     };
                     break;
-
             }
         }
 
@@ -156,14 +187,18 @@ class Gameboard {
             if (this.canMoveDown(currentActiveSquare)) {
                 currentActiveSquare.drop();
             } else {
-                this.occupyCells(currentActiveSquare);
+                this.occupyCells(currentActiveSquare, currentActiveSquare.bgColor);
+                this.updateGrid();
+                this.redrawGrid();
                 currentActiveSquare = this.newShape(START_POS);
                 currentActiveSquare.display();
+                console.table(this.grid);
             }
         },
-            800);
+            200);
 
         setInterval(() => {
+            
             window.scroll(0, 10);
             window.scroll(0, 11);
         }, 1)
