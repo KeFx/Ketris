@@ -192,10 +192,9 @@ class Gameboard {
                 this.redrawGrid();
                 currentActiveSquare = this.newShape(START_POS);
                 currentActiveSquare.display();
-                console.table(this.grid);
             }
         },
-            200);
+            1000);
 
         setInterval(() => {
             
