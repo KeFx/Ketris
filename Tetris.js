@@ -51,13 +51,15 @@ class Gameboard {
         return row.every(c => c != 'white');
     }
 
-    updateGrid() {
+    updateGridIfRowFull() {
         this.grid.forEach((row, i) => {
             if (this.isRowFull(row)) {
                 this.grid.splice(i, 1);
                 this.grid.unshift(this.newEmptyRow());
+                this.redrawGrid()
             }
         })
+        
     }
 
     redrawGrid() {
@@ -148,60 +150,93 @@ class Gameboard {
 
     startGame() {
         const START_POS = { x: 4, y: 0 };
-
         let currentActiveSquare = this.newShape(START_POS);
-
         currentActiveSquare.display();
 
-        window.onkeydown = (e) => {
-            let key = e.key || e.keyCode;
-            switch (key) {
+        const moveDown = () => { 
+            if (this.canMoveDown(currentActiveSquare)) {
+                currentActiveSquare.drop(); 
+            }
 
+                if (!this.canMoveDown(currentActiveSquare)) {
+                    this.occupyCells(currentActiveSquare, currentActiveSquare.bgColor);
+                    this.updateGridIfRowFull();
+                    currentActiveSquare = this.newShape(START_POS);
+                    currentActiveSquare.display();
+                }
+        }
+
+        const moveLeft = () => { this.canMoveLeft(currentActiveSquare) && currentActiveSquare.left(); }
+        const moveRight = () => { this.canMoveRight(currentActiveSquare) && currentActiveSquare.right(); }
+        const rotate = () => { this.canTurn(currentActiveSquare) && currentActiveSquare.turn(); }
+
+        const activeActions = new Set();
+        
+        let isRotationKeyFreshlyPressed = true;
+
+        window.onkeydown = (ev) => {
+            let key = ev.key || ev.keyCode;
+            switch (key) {
                 case "ArrowDown": case "s":
-                    if (this.canMoveDown(currentActiveSquare)) {
-                        currentActiveSquare.drop();
-                    };
+                    activeActions.add(moveDown);
                     break;
 
                 case "ArrowLeft": case "a":
-                    if (this.canMoveLeft(currentActiveSquare)) {
-                        currentActiveSquare.left();
-                    };
+                    activeActions.add(moveLeft);
                     break;
 
                 case "ArrowRight": case "d":
-                    if (this.canMoveRight(currentActiveSquare)) {
-                        currentActiveSquare.right();
-                    };
+                    activeActions.add(moveRight);
                     break;
 
                 case "ArrowUp": case "w":
-                    if (this.canTurn(currentActiveSquare)) {
-                        currentActiveSquare.turn();
-                    };
+                    if(isRotationKeyFreshlyPressed){
+                        rotate();
+                        isRotationKeyFreshlyPressed = false;
+                    }
                     break;
             }
+            activeActions.forEach(f => f());
         }
+
+        window.onkeyup = (ev) => {
+            let key = ev.key || ev.keyCode;
+            switch (key) {
+                case "ArrowDown": case "s":
+                    activeActions.delete(moveDown);
+                    break;
+
+                case "ArrowLeft": case "a":
+                    activeActions.delete(moveLeft);
+                    break;
+
+                case "ArrowRight": case "d":
+                    activeActions.delete(moveRight);
+                    break;
+
+                case "ArrowUp": case "w":
+                    isRotationKeyFreshlyPressed = true;
+                    break;
+            }
+        }   
 
         const gInterval = setInterval(() => {
             if (this.canMoveDown(currentActiveSquare)) {
                 currentActiveSquare.drop();
-            } else {
+            } 
+            
+            if (!this.canMoveDown(currentActiveSquare)) {
                 this.occupyCells(currentActiveSquare, currentActiveSquare.bgColor);
-                this.updateGrid();
-                this.redrawGrid();
+                this.updateGridIfRowFull();
                 currentActiveSquare = this.newShape(START_POS);
                 currentActiveSquare.display();
             }
-        },
-            1000);
-
+        }, 500);
+        
         setInterval(() => {
-            
             window.scroll(0, 10);
             window.scroll(0, 11);
         }, 1)
-
     }
 }
 
