@@ -21,16 +21,11 @@ class Tetromino {
         return deltas.map(d => ({ x: handlePoint.x + d[0], y: handlePoint.y + d[1] }));
     }
 
-    parsePosture(shape) {
+    parsePosture(posture) {
         let coords = [];
 
-        for (let y = 0; y < shape.length; y++) {
-            for (let x = 0; x < [...shape[y]].length; x++) {
-                if (shape[y][x] === '1') {
-                    coords.push([x, y]);
-                }
-            }
-        }
+        const postureSize = posture.length;
+        [...posture.join('')].forEach((c, i) => c === '1' && coords.push([i%postureSize, Math.floor(i/postureSize)]));
 
         return coords;
     }

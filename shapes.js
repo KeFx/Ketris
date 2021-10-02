@@ -22,15 +22,6 @@ class OPiece extends Tetromino {
              '0000'],
         ];
     }
-
-    returnOccupiedCells(handlePoint) {
-        const deltas = [
-            [0, 0], [1, 0],
-            [0, 1], [1, 1]
-        ];
-
-        return this.returnOccupieBasedDeltas(handlePoint, deltas);
-    }
 }
 
 class IPiece extends Tetromino {
