@@ -6,7 +6,7 @@ body {
 #Ketris{
     background-color: lightcoral;
     margin: auto;
-    width: 500px;
+    width: 450px;
 }
 canvas {
     background-color: lightcoral;
