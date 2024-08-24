@@ -1,11 +1,11 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Ketris",
     "version": "0.0.1",
     "description": "Simple tetris game to waste you time one.",
     
-    "browser_action": {
-        "default_popup": "Tetris.html",
+    "action": {
+        "default_popup": "Ketris.html",
         "default_icon": "images/KetrisIcon_128.png"
     },
 
